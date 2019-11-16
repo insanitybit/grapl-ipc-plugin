@@ -5,6 +5,7 @@ from grapl_analyzerlib.nodes.types import PropertyT
 from grapl_analyzerlib.nodes.viewable import EdgeViewT, ForwardEdgeView
 from grapl_analyzerlib.prelude import DynamicNodeQuery, DynamicNodeView, ProcessQuery, ProcessView
 from grapl_analyzerlib.nodes.comparators import StrCmp, IntCmp, _str_cmps, _int_cmps
+from grapl_analyzerlib.schemas import NodeSchema, ProcessSchema
 from pydgraph import DgraphClient
 
 
@@ -102,3 +103,20 @@ class IpcView(DynamicNodeView):
     def _get_properties(self, fetch: bool = False) -> Mapping[str, Union[str, int]]:
         props = {"src_pid": self.src_pid, "dst_pid": self.dst_pid}
         return {p[0]: p[1] for p in props.items() if p[1] is not None}
+
+
+class IpcSchema(NodeSchema):
+
+    def __init__(self) -> None:
+        super(IpcSchema, self).__init__()
+        (
+            self
+            .with_int_prop('src_pid')
+            .with_int_prop('dst_pid')
+            .with_forward_edge('ipc_creator', ProcessSchema)
+            .with_forward_edge('ipc_recipient', ProcessSchema)
+        )
+
+    @staticmethod
+    def self_type() -> str:
+        return 'Ipc'
