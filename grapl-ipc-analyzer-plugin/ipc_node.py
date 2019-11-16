@@ -1,10 +1,11 @@
 from copy import deepcopy
 from typing import *
 
+from grapl_analyzerlib.nodes.types import PropertyT
+from grapl_analyzerlib.nodes.viewable import EdgeViewT, ForwardEdgeView
 from grapl_analyzerlib.prelude import DynamicNodeQuery, DynamicNodeView, ProcessQuery, ProcessView
 from grapl_analyzerlib.nodes.comparators import StrCmp, IntCmp, _str_cmps, _int_cmps
 from pydgraph import DgraphClient
-
 
 
 class IpcQuery(DynamicNodeQuery):
