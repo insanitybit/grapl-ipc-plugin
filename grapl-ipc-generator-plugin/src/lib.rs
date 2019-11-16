@@ -9,7 +9,6 @@ pub const IPC_RECIPIENT: &'static str = "ipc_recipient";
 
 #[derive(Clone, GraplNode)]
 pub struct Ipc {
-    hostname: String,
     src_pid: u64,
     dst_pid: u64,
     ipc_type: String,
