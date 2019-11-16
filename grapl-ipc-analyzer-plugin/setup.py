@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="grapl_ipc_analyzer_plugin",
-    version="0.1.253",
+    version="0.0.1",
     description="Library for Grapl Analyzers",
     url="https://github.com/insanitybit/grapl-ipc-plugin/",
     author="insanitybit",
