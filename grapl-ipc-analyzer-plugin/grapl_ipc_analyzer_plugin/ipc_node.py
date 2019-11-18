@@ -27,6 +27,12 @@ class IpcQuery(DynamicNodeQuery):
         )
         return self
 
+    def with_asset_id(self, eq=StrCmp, contains=StrCmp, ends_with=StrCmp) -> "IpcQuery":
+        self.set_str_property_filter(
+            "asset_id", _str_cmps("asset_id", eq=eq, contains=contains, ends_with=ends_with)
+        )
+        return self
+
     def with_ipc_creator(
             self, ipc_creator_query: "Optional[ProcessQuery]" = None
     ) -> "IpcQuery":
@@ -73,6 +79,8 @@ class IpcView(DynamicNodeView):
             node_type: str,
             src_pid: Optional[int] = None,
             dst_pid: Optional[int] = None,
+            asset_id: Optional[str] = None,
+            ipc_type: Optional[str] = None,
             ipc_creator: Optional[ProcessQuery] = None,
             ipc_recipient: Optional[ProcessQuery] = None,
     ):
@@ -82,12 +90,19 @@ class IpcView(DynamicNodeView):
         self.node_type = node_type
         self.src_pid = src_pid
         self.dst_pid = dst_pid
+        self.asset_id = asset_id
+        self.ipc_type = ipc_type
         self.ipc_creator = ipc_creator
         self.ipc_recipient = ipc_recipient
 
     @staticmethod
     def _get_property_types() -> Mapping[str, "PropertyT"]:
-        return {"src_pid": int, "dst_pid": int}
+        return {
+            "src_pid": int,
+            "dst_pid": int,
+            "asset_id": str,
+            "ipc_type": str,
+        }
 
     @staticmethod
     def _get_forward_edge_types() -> Mapping[str, "EdgeViewT"]:
@@ -101,7 +116,12 @@ class IpcView(DynamicNodeView):
         return {fe[0]: fe[1] for fe in f_edges.items() if fe[1]}
 
     def _get_properties(self, fetch: bool = False) -> Mapping[str, Union[str, int]]:
-        props = {"src_pid": self.src_pid, "dst_pid": self.dst_pid}
+        props = {
+            "src_pid": self.src_pid,
+            "dst_pid": self.dst_pid,
+            "asset_id": self.asset_id,
+            "ipc_type": self.ipc_type,
+        }
         return {p[0]: p[1] for p in props.items() if p[1] is not None}
 
 
@@ -113,6 +133,8 @@ class IpcSchema(NodeSchema):
             self
             .with_int_prop('src_pid')
             .with_int_prop('dst_pid')
+            .with_str_prop('asset_id')
+            .with_str_prop('ipc_type')
             .with_forward_edge('ipc_creator', ProcessSchema)
             .with_forward_edge('ipc_recipient', ProcessSchema)
         )
