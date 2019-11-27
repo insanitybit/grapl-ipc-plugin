@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="grapl_ipc_analyzer_plugin",
-    version="0.0.1",
+    version="0.0.2",
     description="Library for Grapl Analyzers",
     url="https://github.com/insanitybit/grapl-ipc-plugin/",
     author="insanitybit",
@@ -14,6 +14,9 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     zip_safe=False,
+    package_data = {
+        "grapl_ipc_analyzer_plugin": ["py.typed"]
+    }
     packages=find_packages(),
     include_package_data=True,
     install_requires=["pydgraph"],
